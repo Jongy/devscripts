@@ -17,6 +17,8 @@ def get_objdump(f):
         return "objdump"
     elif mach == "EM_ARM":
         return "arm-none-eabi-objdump"
+    elif mach == "EM_XTENSA":
+        return "xtensa-esp32-elf-objdump"
     else:
         raise ValueError("no objdump for {!r}!".format(mach))
 
