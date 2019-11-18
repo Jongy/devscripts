@@ -73,7 +73,7 @@ def objdump_dir(func, d):
 def main(argv):
     if len(sys.argv) < 2:
         print("usage: python3 {} func [files...]".format(sys.argv[0]))
-        printf("if no files are given, search in current directory, recursively")
+        print("if no files are given, search in current directory, recursively")
         sys.exit(1)
 
     func = sys.argv[1]
