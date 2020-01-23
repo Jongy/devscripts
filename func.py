@@ -35,21 +35,29 @@ def process_objdump_outpuut(func, f, output):
     last = None
     addr = None
 
-    for l in output.splitlines():
-        m = re.match(r"^([a-f0-9]+)\ <(\w*{}\w*)>:$".format(func), l)
+    for line in output.splitlines():
+        m = re.match(r"^([a-f0-9]+)\ <(\w*{}\w*)>:$".format(func), line)
         if m:
             addr = m.group(1)
             cur = m.group(2)
             in_func = True
-            l += " " + f
-        elif l == "" and in_func:
+            line += " " + f
+            first = True
+        elif line == "" and in_func:
             # function ends in a blank
             in_func = False
             function_info(cur, addr, last)
 
         if in_func:
-            print(l)
-            last = l
+            if not first:
+                cur_addr, rest = line.split(':', 1)
+                print("{:10x}".format(int(cur_addr, 16) - int(addr, 16)),
+                      "{:10}:".format(cur_addr),
+                      rest.strip())
+            else:
+                print(line)
+                first = False
+            last = line
     else:
         if in_func:
             function_info(cur, addr, last)
